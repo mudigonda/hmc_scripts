@@ -40,8 +40,8 @@ n_grad_evals = ac_df['num grad'].astype(int)
 
 X_mean = np.mean(X**2,keepdims=True)[0][0]
 ac_squeeze = np.squeeze(ac[0])
-ac_squeeze = ac_squeeze/ac_squeeze[0]
-ac = np.vstack((X_mean.reshape(1,1),ac_squeeze.reshape(Time-2,1)))
+ac_squeeze = ac_squeeze/X_mean
+ac = np.vstack((1.,ac_squeeze.reshape(Time-2,1)))
 #Drop Mic and leave.
 fig = plt.figure()
 plt.plot(n_grad_evals,ac,'r')
