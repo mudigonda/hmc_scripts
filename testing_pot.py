@@ -26,6 +26,7 @@ for ii in range(nbasis):
   #Multiply them together, we can basically multiply as many as we like (If I understand this correctly!)
   samples = samples* samples_init[:,:,ii]
 
+samples = samples/(np.linalg.det(W))
 #Now samples is from *a* product of experts, just like we did in the Gaussian case!!!
 print "Our initial samples are"
 #Tada!
