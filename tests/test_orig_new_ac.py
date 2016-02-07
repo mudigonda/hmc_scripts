@@ -25,13 +25,25 @@ ac_df = autocorrelation(df,half_window)
 
 #Now, we can run the same autocorrelation from the data we will extract from the data frame
 #but with the theano function
+Time = len(df)
+N, nbatch = df.loc[0]['X'].shape
 
-ac= hmc.normed_autocorrelation(df)
+X = np.zeros((N,nbatch,Time))
+
+for tt in range(Time):
+   X[:,:,tt] = df.loc[tt]['X']
+
+theano_ac = hmc.autocorrelation()
+ac= theano_ac(X.astype('float32'))
 #We can compare the two plots individually and on a single plot
-
-#Drop Mic and leave.
 n_grad_evals = ac_df['num grad'].astype(int)
+
+X_mean = np.mean(X**2,keepdims=True)[0][0]
+ac_squeeze = np.squeeze(ac[0])
+ac_squeeze = ac_squeeze/X_mean
+ac = np.vstack((1.,ac_squeeze.reshape(Time-2,1)))
+#Drop Mic and leave.
 fig = plt.figure()
-plt.plot(n_grad_evals,ac['autocorrelation'],'r')
+plt.plot(n_grad_evals,ac,'r')
 plt.plot(n_grad_evals,ac_df['autocorrelation'],'g')
 fig.savefig('tmp_autocorr.png')
