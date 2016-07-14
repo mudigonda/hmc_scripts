@@ -13,7 +13,7 @@ BATCH_SIZE = int(1E+1)
 nbasis = 36
 ndims = 36
 W_half = np.random.randn(ndims,nbasis/2)
-W = np.concatenate((W_half.todense(),-W_half.todense()),axis=1)
+W = np.concatenate((W_half,-W_half),axis=1)
 
 #Not doing this makes it bork crazily. Poor implementation of inheritance
 PoT = ProductOfT(nbasis=nbasis,ndims=ndims,W=W)
